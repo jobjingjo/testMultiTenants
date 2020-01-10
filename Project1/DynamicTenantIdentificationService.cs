@@ -1,4 +1,10 @@
-public sealed class DynamicTenantIdentificationService : ITenantIdentificationService
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+
+namespace testMultiTenants
+{
+    public sealed class DynamicTenantIdentificationService : ITenantIdentificationService
     {
         private readonly Func<HttpContext, string> _currentTenant;
         private readonly Func<IEnumerable<string>> _allTenants;
@@ -29,3 +35,4 @@ public sealed class DynamicTenantIdentificationService : ITenantIdentificationSe
             return this._currentTenant(context);
         }
     }
+}

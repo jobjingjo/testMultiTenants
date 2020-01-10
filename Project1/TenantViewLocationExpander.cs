@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
+
 public sealed class TenantViewLocationExpander : IViewLocationExpander
 {
     private ITenantService _service;

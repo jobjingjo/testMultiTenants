@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.Razor;
+
 public static class RazorPageExtensions
 {
     public static T GetValueForTenant(this IRazorPage page, string setting, T defaultValue = default(T))

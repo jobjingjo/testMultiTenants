@@ -1,10 +1,16 @@
-public sealed class HostTenantIdentificationService : ITenantIdentificationService
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+
+namespace testMultiTenants
+{
+    public sealed class HostTenantIdentificationService : ITenantIdentificationService
     {
         private readonly TenantMapping _tenants;
 
-        public HostTenantIdentificationService(IConfiguration configuration)
+        public HostTenantIdentificationService(IOptions<TenantMapping> settings)
         {
-            this._tenants = configuration.GetTenantMapping();
+            this._tenants = settings.Value;
         }
 
         public HostTenantIdentificationService(TenantMapping tenants)
@@ -27,3 +33,4 @@ public sealed class HostTenantIdentificationService : ITenantIdentificationServi
             return tenant;
         }
     }
+}

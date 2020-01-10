@@ -1,14 +1,20 @@
-public sealed class abcTenantConfiguration : ITenantConfiguration
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace testMultiTenants
 {
-    public void Configure(IConfiguration configuration)
+    public sealed class abcTenantConfiguration : ITenantConfiguration
     {
-        configuration["StringOption"] = "abc";
-    }
+        public void Configure(IConfiguration configuration)
+        {
+            configuration["StringOption"] = "abc";
+        }
 
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddScoped<IMyService, XptoService>();
-    }
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //services.AddScoped<IMyService, XptoService>();
+        }
 
-    public string Tenant => "abc";
+        public string Tenant => "abc";
+    }
 }

@@ -1,27 +1,32 @@
-public sealed class QueryStringTenantIdentificationService : ITenantIdentificationService
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+
+namespace testMultiTenants
 {
-    private readonly TenantMapping _tenants;
-
-    public QueryStringTenantIdentificationService(IConfiguration configuration)
+    public sealed class QueryStringTenantIdentificationService : ITenantIdentificationService
     {
-        this._tenants = configuration.GetTenantMapping();
-    }
+        private readonly TenantMapping _tenants;
 
-    public string GetCurrentTenant(HttpContext context)
-    {
-        var tenant = context.Request.Query["Tenant"].ToString();
-
-        if (string.IsNullOrWhiteSpace(tenant) || !this._tenants.Tenants.Values.Contains(tenant, 
-            StringComparer.InvariantCultureIgnoreCase))
+        public QueryStringTenantIdentificationService(IOptions<TenantMapping> settings)
         {
-            return this._tenants.Default;
+            this._tenants = settings.Value;
         }
 
-        if (this._tenants.Tenants.TryGetValue(tenant, out var mappedTenant))
+        public string GetCurrentTenant(HttpContext context)
         {
-            return mappedTenant;
-        }
+            var tenant = context.Request.Query["Tenant"].ToString();
 
-        return tenant;
+            if (string.IsNullOrWhiteSpace(tenant) || !this._tenants.Tenants.ContainsKey(tenant))
+            {
+                return this._tenants.Default;
+            }
+
+            if (this._tenants.Tenants.TryGetValue(tenant, out var mappedTenant))
+            {
+                return mappedTenant;
+            }
+
+            return tenant;
+        }
     }
 }

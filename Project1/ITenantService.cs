@@ -1,4 +1,7 @@
-public interface ITenantService
+namespace testMultiTenants
 {
-    string GetCurrentTenant();
+    public interface ITenantService
+    {
+        string GetCurrentTenant();
+    }
 }

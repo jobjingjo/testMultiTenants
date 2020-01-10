@@ -1,25 +1,31 @@
-[HtmlTargetElement("tenant")]
-public sealed class TenantTagHelper : TagHelper
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace testMultiTenants
 {
-    private readonly ITenantService _service;
-
-    public TenantTagHelper(ITenantService service)
+    [HtmlTargetElement("tenant")]
+    public sealed class TenantTagHelper : TagHelper
     {
-        this._service = service;
-    }
+        private readonly ITenantService _service;
 
-    [HtmlAttributeName("name")]
-    public string Name { get; set; }
-
-    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-    {
-        var tenant = this.Name ?? string.Empty;
-
-        if (tenant != this._service.GetCurrentTenant())
+        public TenantTagHelper(ITenantService service)
         {
-            output.SuppressOutput();
+            this._service = service;
         }
 
-        return base.ProcessAsync(context, output);
+        [HtmlAttributeName("name")]
+        public string Name { get; set; }
+
+        public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        {
+            var tenant = this.Name ?? string.Empty;
+
+            if (tenant != this._service.GetCurrentTenant())
+            {
+                output.SuppressOutput();
+            }
+
+            return base.ProcessAsync(context, output);
+        }
     }
 }

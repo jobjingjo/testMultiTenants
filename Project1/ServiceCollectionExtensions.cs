@@ -1,5 +1,13 @@
-public static class ServiceCollectionExtensions
+using System.Linq;
+using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace testMultiTenants
 {
+    public static class ServiceCollectionExtensions
+    {
         public static IServiceCollection AddTenantConfiguration(this IServiceCollection services, Assembly assembly)
         {
             var types = assembly
@@ -39,4 +47,5 @@ public static class ServiceCollectionExtensions
             var assembly = typeof(T).Assembly;
             return services.AddTenantConfiguration(assembly);
         }
+    }
 }

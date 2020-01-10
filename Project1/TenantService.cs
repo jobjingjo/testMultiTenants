@@ -1,16 +1,21 @@
-public sealed class TenantService : ITenantService
+using Microsoft.AspNetCore.Http;
+
+namespace testMultiTenants
 {
-    private readonly HttpContext _httpContext;
-    private readonly ITenantIdentificationService _service;
-
-    public TenantService(IHttpContextAccessor accessor, ITenantIdentificationService service)
+    public sealed class TenantService : ITenantService
     {
-        this._httpContext = accessor.HttpContext;
-        this._service = service;
-    }
+        private readonly HttpContext _httpContext;
+        private readonly ITenantIdentificationService _service;
 
-    public string GetCurrentTenant()
-    {
-        return this._service.GetCurrentTenant(this._httpContext);
+        public TenantService(IHttpContextAccessor accessor, ITenantIdentificationService service)
+        {
+            this._httpContext = accessor.HttpContext;
+            this._service = service;
+        }
+
+        public string GetCurrentTenant()
+        {
+            return this._service.GetCurrentTenant(this._httpContext);
+        }
     }
 }
