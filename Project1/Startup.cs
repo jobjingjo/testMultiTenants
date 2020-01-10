@@ -89,6 +89,7 @@ namespace testMultiTenants
 
             //// adding tenant-specific configuration classes from a given assembly
             //services.AddTenantConfiguration();
+            services.AddSingleton<ITenantDbContext, DifferentConnectionTenantDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
