@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -48,10 +49,10 @@ namespace testMultiTenants
             services.AddMvc();
             services.AddRazorPages();
             //// for having different Razor .cshtml files per tenant
-            //services.Configure(options =>
-            //{
-            //    options.ViewLocationExpanders.Insert(0, new TenantViewLocationExpander());
-            //});
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Insert(0, new TenantViewLocationExpander());
+            });
 
             //// the tenants configuration
             //services.Configure(this.Configuration.GetSection("Tenants"));

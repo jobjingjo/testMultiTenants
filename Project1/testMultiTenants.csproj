@@ -7,7 +7,6 @@
   <ItemGroup>
     <Compile Remove="ConfigurationExtensions.cs" />
     <Compile Remove="RazorPageExtensions.cs" />
-    <Compile Remove="TenantViewLocationExpander.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,25 +1,29 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections;
+using System.Collections.Generic;
 
-public sealed class TenantViewLocationExpander : IViewLocationExpander
+namespace testMultiTenants
 {
-    private ITenantService _service;
-    private string _tenant;
-
-    public IEnumerable ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable 
-        viewLocations)
+    public sealed class TenantViewLocationExpander : IViewLocationExpander
     {
-        foreach (var location in viewLocations)
+        private ITenantService _service;
+        private string _tenant;
+
+        public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable<string>
+            viewLocations)
         {
-            yield return location.Replace("{0}", this._tenant + "/{0}");
-            yield return location;
+            foreach (var location in viewLocations)
+            {
+                yield return location.Replace("{0}", _tenant + "/{0}");
+                yield return location;
+            }
         }
-    }
 
-    public void PopulateValues(ViewLocationExpanderContext context)
-    {
-        this._service = context.ActionContext.HttpContext.RequestServices.GetService();
-        this._tenant = this._service.GetCurrentTenant();
+        public void PopulateValues(ViewLocationExpanderContext context)
+        {
+            _service = context.ActionContext.HttpContext.RequestServices.GetService<ITenantService>();
+            _tenant = _service.GetCurrentTenant();
+        }
     }
 }
