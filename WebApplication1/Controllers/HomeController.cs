@@ -12,10 +12,12 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppTenant _tenant;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppTenant tenant)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _tenant = tenant ?? throw new ArgumentNullException(nameof(tenant));
         }
 
         public IActionResult Index()
